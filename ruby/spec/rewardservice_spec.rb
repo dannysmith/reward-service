@@ -8,9 +8,9 @@ describe RewardService do
 
   context "when an account is eligable for rewards" do
 
-    # Set up EligabilityService Mock
+    # Set up EligibilityService Mock
     before do
-      allow(CustomerStatus::EligabilityService).to receive(:new).and_return(double "EligabilityService", eligability: "CUSTOMER_ELIGIBLE")
+      allow(CustomerStatus::EligibilityService).to receive(:new).and_return(double "EligibilityService", eligibility: "CUSTOMER_ELIGIBLE")
     end
 
     describe "and a single channel has no reward" do
@@ -37,21 +37,21 @@ describe RewardService do
 
   context "when an account is NOT eligable for rewards" do
     it "should return no awards" do
-      allow(CustomerStatus::EligabilityService).to receive(:new).and_return(double "EligabilityService", eligability: "CUSTOMER_INELIGIBLE")
+      allow(CustomerStatus::EligibilityService).to receive(:new).and_return(double "EligibilityService", eligibility: "CUSTOMER_INELIGIBLE")
       expect(rewardservice.rewards).to eq({rewards: []})
     end
   end
 
   context "when an invalid account number is supplied" do
     it "should return a string warning of the invalid account number" do
-      allow_any_instance_of(CustomerStatus::EligabilityService).to receive(:eligability).and_raise(InvalidAccountNumber)
+      allow_any_instance_of(CustomerStatus::EligibilityService).to receive(:eligibility).and_raise(InvalidAccountNumber)
       expect(rewardservice.rewards).to eq({message: "Invalid Account Number", rewards: []})
     end
   end
 
-  context "when a technical error occus on the EligabilityService" do
+  context "when a technical error occus on the EligibilityService" do
     it "should return no awards" do
-      allow_any_instance_of(CustomerStatus::EligabilityService).to receive(:eligability).and_raise(StandardError)
+      allow_any_instance_of(CustomerStatus::EligibilityService).to receive(:eligibility).and_raise(StandardError)
       expect(rewardservice.rewards).to eq({rewards: []})
     end
   end

@@ -1,5 +1,5 @@
 require 'yaml'
-require_relative 'customer_status/eligability_service'
+require_relative 'customer_status/eligibility_service'
 require_relative 'exceptions/invalid_account_number'
 
 class RewardService
@@ -7,14 +7,14 @@ class RewardService
 
   def initialize(account_number,
                  portfolio,
-                 eligability_service = CustomerStatus::EligabilityService.new(account_number),
+                 eligibility_service = CustomerStatus::EligibilityService.new(account_number),
                  channel_rewards_path = 'data/channel_rewards.yml')
 
     raise "portfolio is not a Portfolio" unless portfolio.is_a? Portfolio
 
     @account_number = account_number.to_s # Accepts integers or strings
     @portfolio = portfolio
-    @eligability_service = eligability_service
+    @eligibility_service = eligibility_service
     @channel_rewards = YAML.load(File.open(File.expand_path("..", File.dirname(__FILE__)) + "/../" + channel_rewards_path))
   end
 
@@ -28,14 +28,14 @@ class RewardService
 
   def check_if_eligable
     begin
-      eligability = @eligability_service.eligability
+      eligibility = @eligibility_service.eligibility
     rescue InvalidAccountNumber
       return {message: "Invalid Account Number", rewards: []}
     rescue StandardError
       return {rewards: []}
     end
 
-    if eligability == "CUSTOMER_ELIGIBLE"
+    if eligibility == "CUSTOMER_ELIGIBLE"
       return {rewards: fetch_rewards}
     else
       return {rewards: []}

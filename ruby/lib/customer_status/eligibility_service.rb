@@ -1,10 +1,10 @@
 module CustomerStatus
-  class EligabilityService
+  class EligibilityService
     def initialize(account_number)
       # Not implemented
     end
 
-    def eligability
+    def eligibility
       # Not implemented
     end
   end
