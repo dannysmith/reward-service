@@ -1,15 +1,18 @@
 require "spec_helper"
-
 require_relative '../lib/portfolio'
 
 describe Portfolio do
-  it "should return an array of symbolized subscriptions when intitialized with symbols" do
-    portfolio = Portfolio.new :sports, :kids, :music, :news, :movies
-    expect(portfolio.channels).to eq [:sports, :kids, :music, :news, :movies]
+  context "for a series of symbols" do
+    it "should return an array of symbolized subscriptions" do
+      portfolio = Portfolio.new :sports, :kids, :music, :news, :movies
+      expect(portfolio.channels).to eq [:sports, :kids, :music, :news, :movies]
+    end
   end
 
-  it "should convert strings to lowercase symbols when initializing" do
-    portfolio = Portfolio.new "Sports", "Kids"
-    expect(portfolio.channels).to eq [:sports, :kids]
+  context "for capitalised strings" do
+    it "should convert strings to lowercase symbols" do
+      portfolio = Portfolio.new "Sports", "Kids"
+      expect(portfolio.channels).to eq [:sports, :kids]
+    end
   end
 end
