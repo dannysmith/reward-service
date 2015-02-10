@@ -8,4 +8,6 @@ class Portfolio
   def channels
     @channel_subscriptions
   end
+
+  alias to_a channels
 end
