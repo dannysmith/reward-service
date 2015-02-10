@@ -4,7 +4,7 @@ module CustomerStatus
       # Not implemented
     end
 
-    def eligable?
+    def eligability
       # Not implemented
     end
   end

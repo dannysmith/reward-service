@@ -13,7 +13,7 @@ class RewardService
 
     raise "portfolio is not a Portfolio" unless portfolio.is_a? Portfolio
 
-    @account_number = account_number.to_s # Accepst integers or strings
+    @account_number = account_number.to_s # Accepts integers or strings
     @portfolio = portfolio
     @eligability_service = eligability_service
     @channel_rewards = YAML.load(File.open(File.expand_path("..", File.dirname(__FILE__)) + "/../" + channel_rewards_path))
@@ -26,10 +26,23 @@ class RewardService
   private
 
   def fetch_rewards
-    # binding.pry
-    # Keep only relevant rewards
-    rewards = @channel_rewards.select {|k,v| @portfolio.to_a.include? k}
-    rewards = rewards.select {|k,v| v != "N/A"}
-    rewards.values.reject(&:nil?) # Remove nil rewards
+    # Check Eligability with eligability service
+    begin
+      eligability = @eligability_service.eligability
+    rescue InvalidAccountNumber
+      return "Invalid Account Number"
+    rescue StandardError
+      return []
+    end
+
+
+    if eligability == "CUSTOMER_INELIGIBLE"
+      return []
+    elsif eligability == "CUSTOMER_ELIGIBLE"
+      # Keep only relevant rewards
+      rewards = @channel_rewards.select {|k,v| @portfolio.to_a.include? k}
+      rewards = rewards.select {|k,v| v != "N/A"}
+      rewards.values.reject(&:nil?) # Remove nil rewards
+    end
   end
 end

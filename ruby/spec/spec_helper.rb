@@ -4,7 +4,7 @@ Bundler.setup(:default, :test)
 require 'rspec'
 
 # Require the sinatra app
-require_relative File.join('..', 'ruby_reward_service')
+# require_relative File.join('..', 'ruby_reward_service')
 
 
 # Configure RSpec
