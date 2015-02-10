@@ -15,4 +15,11 @@ describe Portfolio do
       expect(portfolio.channels).to eq [:sports, :kids]
     end
   end
+
+  context "for array" do
+    it "should return an array of symbolized strings" do
+      portfolio = Portfolio.new ["Sports", "Kids"]
+      expect(portfolio.channels).to eq [:sports, :kids]
+    end
+  end
 end
