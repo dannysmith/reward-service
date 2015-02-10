@@ -1,5 +1,4 @@
 require 'yaml'
-require 'pry'
 require_relative 'customer_status/eligability_service'
 require_relative 'exceptions/invalid_account_number'
 
@@ -20,13 +19,14 @@ class RewardService
   end
 
   def rewards
-    @rewards ||= fetch_rewards
+    @rewards ||= check_if_eligable
   end
+
+
 
   private
 
-  def fetch_rewards
-    # Check Eligability with eligability service
+  def check_if_eligable
     begin
       eligability = @eligability_service.eligability
     rescue InvalidAccountNumber
@@ -35,14 +35,17 @@ class RewardService
       return []
     end
 
-
-    if eligability == "CUSTOMER_INELIGIBLE"
+    if eligability == "CUSTOMER_ELIGIBLE"
+      return fetch_rewards
+    else
       return []
-    elsif eligability == "CUSTOMER_ELIGIBLE"
-      # Keep only relevant rewards
-      rewards = @channel_rewards.select {|k,v| @portfolio.to_a.include? k}
-      rewards = rewards.select {|k,v| v != "N/A"}
-      rewards.values.reject(&:nil?) # Remove nil rewards
     end
+  end
+
+  def fetch_rewards
+    # Keep only relevant rewards
+    rewards = @channel_rewards.select {|k,v| @portfolio.to_a.include? k}
+    rewards = rewards.select {|k,v| v != "N/A"}
+    rewards.values.reject(&:nil?) # Remove nil rewards
   end
 end
