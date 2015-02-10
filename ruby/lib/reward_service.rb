@@ -30,15 +30,15 @@ class RewardService
     begin
       eligability = @eligability_service.eligability
     rescue InvalidAccountNumber
-      return "Invalid Account Number"
+      return {message: "Invalid Account Number", rewards: []}
     rescue StandardError
-      return []
+      return {rewards: []}
     end
 
     if eligability == "CUSTOMER_ELIGIBLE"
-      return fetch_rewards
+      return {rewards: fetch_rewards}
     else
-      return []
+      return {rewards: []}
     end
   end
 
