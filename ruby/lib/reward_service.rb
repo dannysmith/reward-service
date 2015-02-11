@@ -46,6 +46,8 @@ class RewardService
     # Keep only relevant rewards
     rewards = @channel_rewards.select {|k,v| @portfolio.to_a.include? k}
     rewards = rewards.select {|k,v| v != "N/A"}
-    rewards.values.reject(&:nil?) # Remove nil rewards
+
+    # Remove nil rewards
+    rewards.values.reject(&:nil?)
   end
 end

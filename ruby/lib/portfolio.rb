@@ -1,4 +1,3 @@
-require 'pry'
 class Portfolio
   # Takes symbols or strings as arguments and downcases them, converting them to symbols.
   def initialize(*channel_subscriptions)
