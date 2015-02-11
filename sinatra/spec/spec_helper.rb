@@ -3,12 +3,13 @@ require 'bundler'
 Bundler.setup(:default, :test)
 require 'sinatra'
 require 'rspec'
+require 'json'
 require 'rack/test'
 
-# Require the sinatra app
+# Require sinatra app
 require_relative File.join('..', 'sinatra_reward_service')
 
-# set test environment
+# Set test environment
 Sinatra::Base.set :environment, :test
 Sinatra::Base.set :run, false
 Sinatra::Base.set :raise_errors, true
